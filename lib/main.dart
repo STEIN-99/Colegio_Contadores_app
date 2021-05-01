@@ -1,104 +1,84 @@
 import 'dart:async';
-import 'dart:convert';
-
-import 'package:colegio_app/menu.dart';
+import 'package:ccpt_movil/notifica/notificacion.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'menu.dart';
 
-void main() => runApp(new MyApp());
-
-String username = '';
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(
+void main() => runApp(new MaterialApp(
+      theme:
+          ThemeData(primaryColor: Colors.blue[900], accentColor: Colors.grey),
       debugShowCheckedModeBanner: false,
-      title: 'Primera página',
-      home: new MyHomePage(),
-      routes: <String, WidgetBuilder>{
-        '/principal': (BuildContext context) => new Principal(),
-        '/MyHomePage': (BuildContext context) => new MyHomePage(),
-      },
-    );
-  }
-}
+      home: SplashScreen(),
+    ));
 
-class MyHomePage extends StatefulWidget {
+class SplashScreen extends StatefulWidget {
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _SplashScreenState createState() => new _SplashScreenState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  String msg = '';
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    final pushProvider = new Push();
+    pushProvider.initNotificarions();
 
-  _login() async {
-    Navigator.pushReplacementNamed(context, '/principal');
+    super.initState();
+    Timer(
+      Duration(seconds: 5),
+      () => Navigator.of(context).push(
+        new MaterialPageRoute(
+            builder: (BuildContext context) => new Principal()),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Primera pagina"),
-        backgroundColor: Colors.blue[900],
-      ),
-      resizeToAvoidBottomPadding: false,
-      body: Form(
-        child: Container(
-          decoration: new BoxDecoration(
-            image: new DecorationImage(
-                image: new AssetImage("assets/img/9.png"), fit: BoxFit.cover),
+      body: Stack(
+        fit: StackFit.expand,
+        children: <Widget>[
+          Container(
+            decoration: BoxDecoration(
+              image: new DecorationImage(
+                  image: new AssetImage("assets/img/pantalla_carga.png"),
+                  fit: BoxFit.cover),
+            ),
           ),
-          child: Column(
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              new Container(
-                padding: EdgeInsets.only(top: 77.0),
-                child: new CircleAvatar(
-                  backgroundColor: Color(0xF81F7F3),
-                  child: new Image(
-                    width: 235,
-                    height: 235,
-                    image: new AssetImage("assets/img/xx.png"),
+              Expanded(
+                flex: 2,
+                child: Container(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(top: 200.0),
+                      ),
+                    ],
                   ),
                 ),
-                width: 320.0,
-                height: 320.0,
-                decoration: BoxDecoration(shape: BoxShape.circle),
               ),
-              Container(
-                height: MediaQuery.of(context).size.height / 4,
-                width: MediaQuery.of(context).size.width,
-                padding: EdgeInsets.only(top: 50),
-                child: Column(
-                  children: <Widget>[
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                          top: 6,
-                          right: 32,
-                        ),
+              Expanded(
+                  flex: 1,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      CircularProgressIndicator(),
+                      Padding(
+                        padding: EdgeInsets.only(top: 20.0),
                       ),
-                    ),
-                    Spacer(),
-                    RaisedButton(
-                      child: new Text("INICIAR"),
-                      color: Colors.blue[900],
-                      shape: new RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(40.0)),
-                      onPressed: () {
-                        _login();
-                      },
-                    ),
-                    Text(msg,
-                        style: TextStyle(fontSize: 25.0, color: Colors.red)),
-                  ],
-                ),
-              ),
+                      Text("",
+                          style: TextStyle(
+                              color: Colors.yellowAccent[400],
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold)),
+                    ],
+                  ))
             ],
           ),
-        ),
+        ],
       ),
     );
   }

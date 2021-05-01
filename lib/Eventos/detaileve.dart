@@ -1,5 +1,6 @@
-import 'package:colegio_app/Eventos/eventos.dart';
+import 'package:ccpt_movil/Pdfviewer/MyClipper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
 class Detaieve extends StatefulWidget {
@@ -12,95 +13,106 @@ class Detaieve extends StatefulWidget {
 
 class _Detaieve extends State<Detaieve> {
   void deleteData() {
-    var url = "http://10.0.2.2/Proyectos/CCP/conexiones/Eventos/deleteData.php";
-    http.post(url, body: {'ID_FECHA': widget.list[widget.index]['ID_FECHA']});
-  }
-
-  void confirm() {
-    AlertDialog alertDialog = new AlertDialog(
-      content: new Text(
-          "Esta seguto de eliminar '${widget.list[widget.index]['NOMBRE']}'"),
-      actions: <Widget>[
-        new RaisedButton(
-          child: new Text(
-            "OK Eliminado!",
-            style: new TextStyle(color: Colors.black),
-          ),
-          color: Colors.red,
-          onPressed: () {
-            deleteData();
-            Navigator.of(context).push(new MaterialPageRoute(
-              builder: (BuildContext context) => new Eventos(),
-            ));
-          },
-        ),
-        new RaisedButton(
-          child:
-              new Text("CANCELAR", style: new TextStyle(color: Colors.black)),
-          color: Colors.green,
-          onPressed: () => Navigator.pop(context),
-        ),
-      ],
-    );
-
-    showDialog(context: context, child: alertDialog);
+    var url = "http://ccptab.com/Movil/Eventos.php";
+    http.post(url, body: {'id_evento': widget.list[widget.index]['id_evento']});
   }
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text("${widget.list[widget.index]['NOMBRE']}"),
+        title: new Text("${widget.list[widget.index]['nombre_evento']}"),
         backgroundColor: Colors.blue[900],
       ),
-      body: new Container(
-        height: 550.0,
-        padding: const EdgeInsets.all(10.0),
-        child: new Card(
-          child: new Center(
-            child: new Column(
-              children: <Widget>[
-                new Padding(
-                  padding: const EdgeInsets.only(top: 40.0),
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            ClipPath(
+              clipper: MyClipper(),
+              child: Container(
+                padding: EdgeInsets.only(top: 40),
+                height: 300,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.bottomLeft,
+                    end: Alignment.topRight,
+                    colors: [
+                      Colors.blue,
+                      Colors.blue[900],
+                      Colors.blue,
+                    ],
+                  ),
                 ),
-                new Text(
-                  widget.list[widget.index]['NOMBRE'],
-                  style: new TextStyle(fontSize: 30.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Center(
+                      child: Text(
+                        widget.list[widget.index]['nombre_evento'],
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontSize: 30,
+                        ),
+                      ),
+                    )
+                  ],
                 ),
-                Divider(),
-                Divider(),
-                Divider(),
-                new Text(
-                  "Detalles del evento: ${widget.list[widget.index]['DESCRIP']}",
-                  style: new TextStyle(fontSize: 18.0),
-                ),
-                new Padding(
-                  padding: const EdgeInsets.only(top: 30.0),
-                ),
-                new Text(
-                  "Ubicacion : ${widget.list[widget.index]['UBICACION']}",
-                  style: new TextStyle(fontSize: 18.0),
-                ),
-                new Padding(
-                  padding: const EdgeInsets.only(top: 30.0),
-                ),
-                new Text(
-                  "Fecha: ${widget.list[widget.index]['FECHA']}",
-                  style: new TextStyle(fontSize: 18.0),
-                ),
-                new Padding(
-                  padding: const EdgeInsets.only(top: 30.0),
-                ),
-                new Text(
-                  "Hora : ${widget.list[widget.index]['HORA']}",
-                  style: new TextStyle(fontSize: 18.0),
-                ),
-                new Padding(
-                  padding: const EdgeInsets.only(top: 30.0),
-                ),
-              ],
+              ),
             ),
-          ),
+            Container(
+              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+              margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+              width: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15.0),
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey,
+                    blurRadius: 3,
+                  )
+                ],
+              ),
+              child: Column(
+                children: <Widget>[
+                  Text(
+                    "Detalles del evento: ${widget.list[widget.index]['detalle_evento']} \n",
+                    style: new TextStyle(fontSize: 23.0),
+                    textAlign: TextAlign.justify,
+                  ),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  Row(
+                    children: [
+                      Icon(Icons.event_note),
+                      Text(
+                        "Fecha: ${widget.list[widget.index]['fecha_evento']}         ",
+                        style: TextStyle(fontSize: 17.0),
+                      ),
+                      SizedBox(
+                        height: 15.0,
+                      ),
+                      Icon(Icons.access_time),
+                      Text(
+                        "Hora : ${widget.list[widget.index]['hora_evento']}",
+                        style: TextStyle(fontSize: 17.0),
+                      ),
+                    ],
+                  ),
+                  Text(
+                    "\nUbicacion: ${widget.list[widget.index]['ubicacion']}",
+                    style: new TextStyle(fontSize: 21.0),
+                    textAlign: TextAlign.justify,
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );

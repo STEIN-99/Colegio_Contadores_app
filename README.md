@@ -1,4 +1,4 @@
-# colegio_app
+# ccpt_movil
 
 A new Flutter project.
 

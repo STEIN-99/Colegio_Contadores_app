@@ -4,12 +4,12 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 
-class Eventos1 extends StatefulWidget {
+class Eventos extends StatefulWidget {
   @override
-  _Eventos1State createState() => new _Eventos1State();
+  _EventosState createState() => new _EventosState();
 }
 
-class _Eventos1State extends State<Eventos1> {
+class _EventosState extends State<Eventos> {
   Future<List> getData() async {
     final response = await http.get("http://ccptab.com/Movil/Eventos.php");
     return json.decode(response.body);
@@ -18,10 +18,6 @@ class _Eventos1State extends State<Eventos1> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: new AppBar(
-        title: new Text("Eventos"),
-        backgroundColor: Colors.blue[900],
-      ),
       body: new FutureBuilder<List>(
         future: getData(),
         builder: (context, snapshot) {
