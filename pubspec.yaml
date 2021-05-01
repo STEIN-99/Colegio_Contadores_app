@@ -1,0 +1,40 @@
+name: ccpt_movil
+description: A new Flutter project.
+
+
+publish_to: 'none' 
+
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  url_launcher: ^5.7.10
+  flutter_plugin_pdf_viewer: ^1.0.7
+
+
+  cupertino_icons: ^1.0.0
+  lipsum: ^1.0.1
+  firebase_messaging: ^5.0.1+1
+  webview_flutter: ^1.0.7
+  workmanager: ^0.2.2
+  http: any
+  flutter_local_notifications: ^1.4.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  curved_navigation_bar: ^0.3.4
+
+flutter:
+
+
+  uses-material-design: true
+  assets:
+        - assets/img/
+        - assets/doc/
+        - assets/pres/
